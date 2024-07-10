@@ -7,6 +7,7 @@
 </div>
 
 
+
 This repository provides the official PyTorch implementation and reproduction for our **SIGIR'24** paper titled **"Leave No Patient Behind: Enhancing Medication Recommendation for Rare Disease Patients"**. 
 
 More descriptions are available via the [paper](https://arxiv.org/abs/2403.17745).
@@ -53,6 +54,7 @@ If this work helps you, please kindly cite our papers:
 
 
 ## Download the data
+
 1. You must have obtained access to [MIMIC-III](https://physionet.org/content/mimiciii/) and [MIMIC-IV](https://physionet.org/content/mimiciv/) databases before running the code. 
 
 2. Download the MIMIC-III and MIMIC-IV datasets, then unzip and put them in the `data/input/` directory. Specifically, you need to download the following files from MIMIC-III: `DIAGNOSES_ICD.csv`, `PRESCRIPTIONS.csv`, and `PROCEDURES_ICD.csv`, and the following files from MIMIC-IV: `DIAGNOSES_ICD.csv`, `PRESCRIPTIONS.csv`, and `PROCEDURES_ICD.csv`.
@@ -60,6 +62,7 @@ If this work helps you, please kindly cite our papers:
 3. Download the [drugbank_drugs_info.csv](https://drive.google.com/file/d/1EzIlVeiIR6LFtrBnhzAth4fJt6H_ljxk/view?usp=sharing) and [drug-DDI.csv]( https://drive.google.com/file/d/1mnPc0O0ztz0fkv3HF-dpmBb8PLWsEoDz/view?usp=sharing) files, and put them in the `data/input/` directory.
 
 ## Preprocess the data
+
 Run the following command to preprocess the data:
 
 ```bash
@@ -70,7 +73,7 @@ If things go well, the processed data will be saved in the `data/output/` direct
 
 ## Run the models
 
-'''bash
+```bash
 usage: main_RAREMed.py [-h] [-n NOTE] [--model_name MODEL_NAME] [--dataset DATASET] [--early_stop EARLY_STOP] [-t] [-l LOG_DIR_PREFIX] [-p PRETRAIN_PREFIX] [--cuda CUDA] [-s] [-e] [-nsp] [-mask] [--pretrain_epochs PRETRAIN_EPOCHS] [--mask_prob MASK_PROB] [--embed_dim EMBED_DIM] [--encoder_layers ENCODER_LAYERS] [--nhead NHEAD] [--batch_size BATCH_SIZE] [--adapter_dim ADAPTER_DIM] [--lr LR] [--dropout DROPOUT] [--weight_decay WEIGHT_DECAY] [--weight_multi WEIGHT_MULTI] [--weight_ddi WEIGHT_DDI]
 
 RAREMed model training and evaluation script
@@ -116,28 +119,31 @@ optional arguments:
                         weight of multilabel margin loss (default: 0.005)
   --weight_ddi WEIGHT_DDI
                         weight of ddi loss (default: 0.1)
-
-'''
+```
 
 Example:
+
 ```bash
 python main_RAREMed.py -nsp -mask    # pretrain and train
 python main_RAREMed.py -t -l=log0    # test
 ```
 
 For Baselines:
+
 ```bash
 python main_GBert_pretrain.py
 python main_GBert.py -p=0
 python main_GBert.py -t -l=log1
 ```
+
 ```bash
 python main_GAMENet.py
 python main_GAMENet.py -t -l=log0
 ```
 
 ## Acknowledgement
-Thanks to [Jing Yi(井怡)](https://github.com/jingii) for her help in the implementation of the RAREMed model.
+
+Thanks to [Jing Yi(井怡)](https://jingii.github.io/) for her help in the implementation of the RAREMed model.
 This repository is partially based on the [SafeDrug](https://github.com/ycq091044/SafeDrug) repository, you can find some additional details in the original repository.
 
 Welcome to contact me zzh1998@mail.ustc.edu.cn for any question.
