@@ -1,0 +1,9 @@
+data/input/mimic-iii/*
+data/input/mimic-iv/*
+data/input/drug-DDI.csv
+data/input/drugbank_drugs_info.csv
+
+data/output/mimic-iii/*
+data/output/mimic-iv/*
+
+src/log/
