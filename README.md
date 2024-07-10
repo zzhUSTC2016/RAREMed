@@ -1,6 +1,6 @@
 # Leave No Patient Behind: Enhancing Medication Recommendation for Rare Disease Patients
 
-[![LICENSE](https://img.shields.io/badge/license-MIT-green)](https://github.com/chongminggao/DORL-codes/blob/main/LICENSE)
+[![LICENSE](https://img.shields.io/badge/license-MIT-green)](https://github.com/zzhUSTC2016/RAREMed/blob/main/LICENSE)
 
 <div style="text-align: center;">
 <img src="figs/RAREMed.png" alt="introduction" style="zoom:50%;" />
