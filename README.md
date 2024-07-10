@@ -70,7 +70,7 @@ If things go well, the processed data will be saved in the `data/output/` direct
 
 ## Run the models
 
-'''bash
+```bash
 usage: main_RAREMed.py [-h] [-n NOTE] [--model_name MODEL_NAME] [--dataset DATASET] [--early_stop EARLY_STOP] [-t] [-l LOG_DIR_PREFIX] [-p PRETRAIN_PREFIX] [--cuda CUDA] [-s] [-e] [-nsp] [-mask] [--pretrain_epochs PRETRAIN_EPOCHS] [--mask_prob MASK_PROB] [--embed_dim EMBED_DIM] [--encoder_layers ENCODER_LAYERS] [--nhead NHEAD] [--batch_size BATCH_SIZE] [--adapter_dim ADAPTER_DIM] [--lr LR] [--dropout DROPOUT] [--weight_decay WEIGHT_DECAY] [--weight_multi WEIGHT_MULTI] [--weight_ddi WEIGHT_DDI]
 
 RAREMed model training and evaluation script
@@ -116,8 +116,7 @@ optional arguments:
                         weight of multilabel margin loss (default: 0.005)
   --weight_ddi WEIGHT_DDI
                         weight of ddi loss (default: 0.1)
-
-'''
+```
 
 Example:
 ```bash
