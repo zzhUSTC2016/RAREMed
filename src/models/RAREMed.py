@@ -7,17 +7,6 @@ from torch.nn import LayerNorm
 from torch.autograd import Variable
 import math
 
-# class Adapter(nn.Module):
-#     def __init__(self, embed_dim, adapter_dim):
-#         super(Adapter, self).__init__()
-#         self.layer_norm = LayerNorm(embed_dim)
-#         self.down_project = nn.Linear(embed_dim, adapter_dim)
-#         self.up_project = nn.Linear(adapter_dim, embed_dim)
-
-#     def forward(self, z):
-#         normalized_z = self.layer_norm(z)
-#         h = F.relu(self.down_project(normalized_z))
-#         return self.up_project(h) + z
 
 class LearnablePositionalEncoding(nn.Module):
     def __init__(self, d_model, dropout=0, max_len=1000):
@@ -186,9 +175,9 @@ class PatientEncoder(nn.Module): # 把patient_encoder抽象出来，方便后续
         return batch_repr
 
 
-class OurModel(PatientEncoder):
+class RAREMed(PatientEncoder):
     def __init__(self, args, voc_size, ddi_adj):
-        super(OurModel, self).__init__(args, voc_size)
+        super(RAREMed, self).__init__(args, voc_size)
         self.tensor_ddi_adj = torch.FloatTensor(ddi_adj).to(self.device)
 
         # self.patient_layer = Adapter(self.emb_dim, args.adapter_dim)

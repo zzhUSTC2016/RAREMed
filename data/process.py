@@ -490,22 +490,6 @@ def get_ddi_mask(atc42SMLES, med_voc):
             ddi_matrix[i, fracSet.index(frac)] = 1
     return ddi_matrix, fracSet
 
-def get_medicine_popularity(records, medicine_pop_file):
-    def get_EHR_pd(ehr_data):
-        EHR_pd = pd.DataFrame(columns=['patient', 'visit','disease','procedure','medicine'])
-        p_id = v_id = 0
-        for patient in ehr_data:
-            for visit in patient:
-                EHR_pd.loc[v_id] = [p_id, v_id, visit[0], visit[1], visit[2]]
-                v_id += 1
-            p_id += 1
-        return EHR_pd
-    EHR_pd = get_EHR_pd(records)
-    all_medicine = [medicine for medicines in EHR_pd['medicine'] for medicine in medicines]
-    medicine_pop = pd.Series(all_medicine).value_counts()
-    medicine_pop.to_csv(medicine_pop_file, header = False)
-    return medicine_pop
-
 for dataset in ['mimic-iii', 'mimic-iv']:
 # for dataset in ['mimic-iv']:
     print("-" * 10, "processing dataset: ", dataset, "-" * 10)
@@ -539,7 +523,6 @@ for dataset in ['mimic-iii', 'mimic-iv']:
     vocabulary_file = output_dir + "/voc_final.pkl"
     ddi_mask_H_file = output_dir + "/ddi_mask_H.pkl"
     atc3toSMILES_file = output_dir + "/atc3toSMILES.pkl"
-    medicine_pop_file = output_dir + "/medicine_pop.csv"
     substructure_smiles_file = output_dir + "/substructure_smiles.pkl"
 
     # for med
@@ -592,9 +575,6 @@ for dataset in ['mimic-iii', 'mimic-iv']:
     ddi_mask_H, fracSet = get_ddi_mask(atc3toSMILES, med_voc)
     dill.dump(ddi_mask_H, open(ddi_mask_H_file, "wb"))
     dill.dump(fracSet, open(substructure_smiles_file, 'wb'))
-
-    # get medicine popularity
-    medicine_pop = get_medicine_popularity(records, medicine_pop_file)
 
     # plt.hist(visit_weights, bins=100, log=True)
     # plt.ylabel('Number of visits')

@@ -8,14 +8,15 @@ import numpy as np
 from tqdm import tqdm
 from copy import deepcopy
 from collections import defaultdict
-import random
-# import yaml
 
 import torch
 import torch.nn.functional as F
 from torch.utils.data.dataloader import DataLoader
 from torch.optim import Adam
 from torch.utils.tensorboard import SummaryWriter
+
+sys.path.append("..")
+sys.path.append("../..")
 
 from utils.data_loader import mimic_data, pad_batch_v2_train, pad_batch_v2_eval, pad_num_replace
 from models.COGNet import COGNet
@@ -47,7 +48,7 @@ def main(args):
     # set logger
     if args.test:
         args.note = f'test of {args.log_dir_prefix}'
-    log_directory_path = os.path.join('log', args.dataset, args.model_name)
+    log_directory_path = os.path.join('../log', args.dataset, args.model_name)
     log_save_id = create_log_id(log_directory_path)
     save_dir = os.path.join(log_directory_path, 'log'+str(log_save_id)+'_'+args.note)
     logging_config(folder=save_dir, name='log{:d}'.format(log_save_id), note=args.note, no_console=False)
@@ -55,11 +56,11 @@ def main(args):
     logging.info(args)
 
     # load data
-    data_path = f'../data/output/{args.dataset}' + '/records_final.pkl'
-    voc_path = f'../data/output/{args.dataset}' + '/voc_final.pkl'
-    ddi_adj_path = f'../data/output/{args.dataset}' + '/ddi_A_final.pkl'
-    ehr_adj_path = f'../data/output/{args.dataset}' + '/ehr_adj_final.pkl'
-    ddi_mask_path = f'../data/output/{args.dataset}' + '/ddi_mask_H.pkl'
+    data_path = f'../../data/output/{args.dataset}' + '/records_final.pkl'
+    voc_path = f'../../data/output/{args.dataset}' + '/voc_final.pkl'
+    ddi_adj_path = f'../../data/output/{args.dataset}' + '/ddi_A_final.pkl'
+    ehr_adj_path = f'../../data/output/{args.dataset}' + '/ehr_adj_final.pkl'
+    ddi_mask_path = f'../../data/output/{args.dataset}' + '/ddi_mask_H.pkl'
 
     device = torch.device('cuda:{}'.format(args.cuda))
 
@@ -243,7 +244,6 @@ def tensorboard_write(writer, ja, prauc, ddi_rate, avg_med, epoch,
     writer.add_scalar('Metrics/Med_count', avg_med, epoch)
 
 if __name__ == '__main__':
-    sys.path.append("..")
     torch.manual_seed(1203)
     np.random.seed(2048)
     args = get_args()

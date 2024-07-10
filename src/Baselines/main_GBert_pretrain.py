@@ -13,6 +13,9 @@ from copy import deepcopy
 import torch
 from torch.optim import Adam
 
+sys.path.append("..")
+sys.path.append("../..")
+
 from utils.util import create_log_id, logging_config, multi_label_metric, get_n_params
 from torch.utils.data import DataLoader, RandomSampler, SequentialSampler, Dataset
 from models.GBert import BertConfig, GBERT_Pretrain
@@ -115,7 +118,7 @@ def get_n_params(model):
 
 def main(args):
     # set logger
-    log_directory_path = os.path.join('log', args.dataset, args.model_name)
+    log_directory_path = os.path.join('../log', args.dataset, args.model_name)
     # os.makedirs(log_directory_path, exist_ok=True)
     log_save_id = create_log_id(log_directory_path)
     save_dir = os.path.join(log_directory_path, 'log'+str(log_save_id)+'_'+args.note)
@@ -128,8 +131,8 @@ def main(args):
     f'therhold={args.therhold}, save_dir={log_save_id}')
     
     # load data
-    data_path = f'../data/output/{args.dataset}' + '/records_final.pkl'
-    voc_path = f'../data/output/{args.dataset}' + '/voc_final.pkl'
+    data_path = f'../../data/output/{args.dataset}' + '/records_final.pkl'
+    voc_path = f'../../data/output/{args.dataset}' + '/voc_final.pkl'
     
     device = torch.device('cuda:{}'.format(args.cuda))
 
@@ -244,15 +247,6 @@ def main(args):
                     t2n(dx_labels))
                 rx_y_trues.append(
                     t2n(rx_labels))
-        # logging.info('dx2dx')
-        # dx2dx_acc_container = metric_report(
-        #     np.concatenate(dx2dx_y_preds, axis=0), np.concatenate(dx_y_trues, axis=0), args.therhold)
-        # logging.info('rx2dx')
-        # rx2dx_acc_container = metric_report(
-        #     np.concatenate(rx2dx_y_preds, axis=0), np.concatenate(dx_y_trues, axis=0), args.therhold)
-        # logging.info('dx2rx')
-        # dx2rx_acc_container = metric_report(
-        #     np.concatenate(dx2rx_y_preds, axis=0), np.concatenate(rx_y_trues, axis=0), args.therhold)
         logging.info('rx2rx')
         rx2rx_acc_container = metric_report(
             np.concatenate(rx2rx_y_preds, axis=0), np.concatenate(rx_y_trues, axis=0), args.therhold)
@@ -285,25 +279,16 @@ def metric_report(y_pred, y_true, therhold=0.5):
     acc_container['f1'] = avg_f1
     acc_container['prauc'] = prauc
 
-    # acc_container['jaccard'] = jaccard_score(y_true, y_pred)
-    # acc_container['f1'] = f1(y_true, y_pred)
-    # acc_container['auc'] = roc_auc(y_true, y_prob)
-    # acc_container['prauc'] = precision_auc(y_true, y_prob)
-
-    # for k, v in acc_container.items():
-    #     logging.info('%-10s : %-10.4f' % (k, v))
     logging.info(f"ja: {acc_container['jaccard']:.4f}, f1: {acc_container['f1']:.4f}, prauc: {acc_container['prauc']:.4f} ")
 
     return acc_container
 
 
 if __name__ == '__main__':
-    sys.path.append("..")
     torch.manual_seed(1203)
     np.random.seed(2048)
     args = get_args()
     random.seed(args.seed)
-    # np.random.seed(args.seed)
     torch.manual_seed(args.seed)
     main(args)
         

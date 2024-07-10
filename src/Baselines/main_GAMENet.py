@@ -4,18 +4,17 @@ import dill
 import logging
 import argparse
 import numpy as np
-import pandas as pd
 from tqdm import tqdm
 from copy import deepcopy
-from scipy.stats import linregress
-# import yaml
 
 import torch
 import torch.nn.functional as F
 from torch.optim import Adam
 from torch.utils.tensorboard import SummaryWriter
 
-from utils import data_loader
+sys.path.append("..")
+sys.path.append("../..")
+
 from models.GAMENet import GAMENet
 from utils.util import multi_label_metric, ddi_rate_score, get_n_params, create_log_id, logging_config, get_grouped_metrics, get_model_path
 
@@ -147,7 +146,7 @@ def main(args):
     # set logger
     if args.test:
         args.note = f'test of {args.log_dir_prefix}'
-    log_directory_path = os.path.join('log', args.dataset, args.model_name)
+    log_directory_path = os.path.join('../log', args.dataset, args.model_name)
     log_save_id = create_log_id(log_directory_path)
     save_dir = os.path.join(log_directory_path, 'log'+str(log_save_id)+'_'+args.note)
     logging_config(folder=save_dir, name='log{:d}'.format(log_save_id), note=args.note, no_console=False)
@@ -155,10 +154,10 @@ def main(args):
     logging.info(args)
 
     # load data
-    data_path = f'../data/output/{args.dataset}' + '/records_final.pkl'
-    voc_path = f'../data/output/{args.dataset}' + '/voc_final.pkl'
-    ddi_adj_path = f'../data/output/{args.dataset}' + '/ddi_A_final.pkl'
-    ehr_adj_path = f'../data/output/{args.dataset}' + '/ehr_adj_final.pkl'
+    data_path = f'../../data/output/{args.dataset}' + '/records_final.pkl'
+    voc_path = f'../../data/output/{args.dataset}' + '/voc_final.pkl'
+    ddi_adj_path = f'../../data/output/{args.dataset}' + '/ddi_A_final.pkl'
+    ehr_adj_path = f'../../data/output/{args.dataset}' + '/ehr_adj_final.pkl'
     
     device = torch.device('cuda:{}'.format(args.cuda))
 
@@ -311,7 +310,6 @@ def plot_hist(all_y_pred, save_path):
     plt.savefig(save_path)
 
 if __name__ == '__main__':
-    sys.path.append("..")
     torch.manual_seed(1203)
     np.random.seed(2048)
     args = get_args()

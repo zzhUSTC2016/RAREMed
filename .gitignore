@@ -7,3 +7,5 @@ data/output/mimic-iii/*
 data/output/mimic-iv/*
 
 src/log/
+*/__pycache__/
+*.pyc

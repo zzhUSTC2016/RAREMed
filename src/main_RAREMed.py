@@ -1,28 +1,21 @@
 import os
 import sys
 import dill
-import time
 import logging
 import argparse
 import numpy as np
-import pandas as pd
 from tqdm import tqdm
 from copy import deepcopy
-from scipy.stats import linregress
 import random
-# import matplotlib.pyplot as plt
 
 import torch
-from torch import nn
 import torch.nn.functional as F
 from torch.optim import AdamW as Optimizer
-from torch.utils.data import Dataset, DataLoader
 from torch.utils.tensorboard.writer import SummaryWriter
-# import yaml
 
-from RAREMed.src.models.RAREMed import OurModel
+from models.RAREMed import RAREMed
 from utils.util import multi_label_metric, ddi_rate_score, get_n_params, create_log_id, logging_config, get_grouped_metrics, \
-    get_model_path, get_pretrained_model_path, resample_data
+    get_model_path, get_pretrained_model_path
 
 # Training settings
 def get_args():
@@ -36,10 +29,7 @@ def get_args():
     parser.add_argument('-l', '--log_dir_prefix', type=str, default=None, help='log dir prefix like "log0", for model test')
     parser.add_argument('-p', '--pretrain_prefix', type=str, default=None, help='log dir prefix like "log0", for finetune')
     parser.add_argument('--cuda', type=int, default=6, help='which cuda')
-    # ablation study
-    parser.add_argument('-s', '--patient_seperate', action='store_true', help='whether to combine diseases and procedures')
-    parser.add_argument('-e', '--seg_rel_emb', action='store_false', default = True, help='whether to use segment and relevance embedding layer')
-    # pretrain!!! 
+    # pretrain
     parser.add_argument('-nsp', '--pretrain_nsp', action='store_true', help='whether to use nsp pretrain')
     parser.add_argument('-mask', '--pretrain_mask', action='store_true', help='whether to use mask prediction pretrain')
     parser.add_argument('--pretrain_epochs', type=int, default=20, help='number of pretrain epochs')
@@ -57,6 +47,10 @@ def get_args():
     # parser.add_argument('--weight_multi', type=float, default=0.03, help='weight of multilabel_margin_loss')        # 严重影响性能。增大weight_multi会提高药物数量（提高正样本预测值），进而提高ddi rate。增大multi会增大bce loss。性能先上升后下降，0.01以后明显影响性能
     parser.add_argument('--weight_multi', type=float, default=0.005, help='weight of multilabel_margin_loss')        # 严重影响性能。增大weight_multi会提高药物数量（提高正样本预测值），进而提高ddi rate。增大multi会增大bce loss。性能先上升后下降，0.01以后明显影响性能
     parser.add_argument('--weight_ddi', type=float, default=0.1, help='weight of ddi loss')         # weight_ddi 越大，loss越高，推荐的药物越少。性能先上升后下降。0.5以上开始明显影响jaccard
+    
+    # parameters for ablation study
+    parser.add_argument('-s', '--patient_seperate', action='store_true', help='whether to combine diseases and procedures')
+    parser.add_argument('-e', '--seg_rel_emb', action='store_false', default = True, help='whether to use segment and relevance embedding layer')
 
     args = parser.parse_args()
     return args
@@ -321,7 +315,6 @@ def main(args):
     data_path = f'../data/output/{args.dataset}' + '/records_final.pkl'
     voc_path = f'../data/output/{args.dataset}' + '/voc_final.pkl'
     ddi_adj_path = f'../data/output/{args.dataset}' + '/ddi_A_final.pkl'
-    medicine_pop_path = f'../data/output/{args.dataset}' + '/medicine_pop.csv'
     
     device = torch.device('cuda:{}'.format(args.cuda))
 
@@ -360,7 +353,7 @@ def main(args):
 
     voc_size = (len(diag_voc.idx2word), len(pro_voc.idx2word), len(med_voc.idx2word))
     # model initialization
-    model = OurModel(args, voc_size, ddi_adj)
+    model = RAREMed(args, voc_size, ddi_adj)
     logging.info(model)
 
     # test
