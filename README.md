@@ -57,6 +57,8 @@ If this work helps you, please kindly cite our papers:
 
 2. Download the MIMIC-III and MIMIC-IV datasets, then unzip and put them in the `data/input/` directory. Specifically, you need to download the following files from MIMIC-III: `DIAGNOSES_ICD.csv`, `PRESCRIPTIONS.csv`, and `PROCEDURES_ICD.csv`, and the following files from MIMIC-IV: `DIAGNOSES_ICD.csv`, `PRESCRIPTIONS.csv`, and `PROCEDURES_ICD.csv`.
 
+3. Download the [drugbank_drugs_info.csv](https://drive.google.com/file/d/1EzIlVeiIR6LFtrBnhzAth4fJt6H_ljxk/view?usp=sharing) and [drug-DDI.csv]( https://drive.google.com/file/d/1mnPc0O0ztz0fkv3HF-dpmBb8PLWsEoDz/view?usp=sharing) files, and put them in the `data/input/` directory.
+
 ## Preprocess the data
 Run the following command to preprocess the data:
 
@@ -68,3 +70,74 @@ If things go well, the processed data will be saved in the `data/output/` direct
 
 ## Run the models
 
+'''bash
+usage: main_RAREMed.py [-h] [-n NOTE] [--model_name MODEL_NAME] [--dataset DATASET] [--early_stop EARLY_STOP] [-t] [-l LOG_DIR_PREFIX] [-p PRETRAIN_PREFIX] [--cuda CUDA] [-s] [-e] [-nsp] [-mask] [--pretrain_epochs PRETRAIN_EPOCHS] [--mask_prob MASK_PROB] [--embed_dim EMBED_DIM] [--encoder_layers ENCODER_LAYERS] [--nhead NHEAD] [--batch_size BATCH_SIZE] [--adapter_dim ADAPTER_DIM] [--lr LR] [--dropout DROPOUT] [--weight_decay WEIGHT_DECAY] [--weight_multi WEIGHT_MULTI] [--weight_ddi WEIGHT_DDI]
+
+RAREMed model training and evaluation script
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -n NOTE, --note NOTE  User notes
+  --model_name MODEL_NAME
+                        model name (default: 'RAREMed')
+  --dataset DATASET     dataset (default: 'mimic-iii')
+  --early_stop EARLY_STOP
+                        early stop after this many epochs without improvement (default: 10)
+  -t, --test            test mode
+  -l LOG_DIR_PREFIX, --log_dir_prefix LOG_DIR_PREFIX
+                        log dir prefix like "log0", for model test (default: None)
+  -p PRETRAIN_PREFIX, --pretrain_prefix PRETRAIN_PREFIX
+                        log dir prefix like "log0", for finetune (default: None)
+  --cuda CUDA           which cuda (default: 6)
+  -s, --patient_seperate
+                        whether to combine diseases and procedures
+  -e, --seg_rel_emb     whether to use segment and relevance embedding layer (default: True)
+  -nsp, --pretrain_nsp  whether to use nsp pretrain
+  -mask, --pretrain_mask
+                        whether to use mask prediction pretrain
+  --pretrain_epochs PRETRAIN_EPOCHS
+                        number of pretrain epochs (default: 20)
+  --mask_prob MASK_PROB
+                        mask probability (default: 0)
+  --embed_dim EMBED_DIM
+                        dimension of node embedding (default: 512)
+  --encoder_layers ENCODER_LAYERS
+                        number of encoder layers (default: 3)
+  --nhead NHEAD         number of encoder head (default: 4)
+  --batch_size BATCH_SIZE
+                        batch size during training (default: 1)
+  --adapter_dim ADAPTER_DIM
+                        dimension of adapter layer (default: 128)
+  --lr LR               learning rate (default: 1e-5)
+  --dropout DROPOUT     dropout probability of transformer encoder (default: 0.3)
+  --weight_decay WEIGHT_DECAY
+                        weight decay (default: 0.1)
+  --weight_multi WEIGHT_MULTI
+                        weight of multilabel margin loss (default: 0.005)
+  --weight_ddi WEIGHT_DDI
+                        weight of ddi loss (default: 0.1)
+
+'''
+
+Example:
+```bash
+python main_RAREMed.py -nsp -mask    # pretrain and train
+python main_RAREMed.py -t -l=log0    # test
+```
+
+For Baselines:
+```bash
+python main_GBert_pretrain.py
+python main_GBert.py -p=0
+python main_GBert.py -t -l=log1
+```
+```bash
+python main_GAMENet.py
+python main_GAMENet.py -t -l=log0
+```
+
+## Acknowledgement
+Thanks to [Jing Yi(井怡)](https://github.com/jingii) for her help in the implementation of the RAREMed model.
+This repository is partially based on the [SafeDrug](https://github.com/ycq091044/SafeDrug) repository, you can find some additional details in the original repository.
+
+Welcome to contact me zzh1998@mail.ustc.edu.cn for any question.

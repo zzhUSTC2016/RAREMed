@@ -6,14 +6,16 @@ import logging
 import math
 import numpy as np
 import os
-import pickle as pkl
 from tqdm import tqdm
 import time
 import torch
 from torch.optim import Adam
 from torch.nn.functional import binary_cross_entropy_with_logits
 from torch.nn.functional import multilabel_margin_loss
+import sys
 
+sys.path.append("..")
+sys.path.append("../..")
 from models.MoleRec import MoleRecModel
 from models.gnn import graph_batch_from_smile
 from utils.util import buildPrjSmiles, create_log_id, logging_config, get_model_path, \
@@ -269,7 +271,7 @@ if __name__ == '__main__':
     # set logger
     if args.test:
         args.note = 'test of ' + args.log_dir_prefix
-    log_directory_path = os.path.join('log', args.dataset, args.model_name)
+    log_directory_path = os.path.join('../log', args.dataset, args.model_name)
     log_save_id = create_log_id(log_directory_path)
     save_dir = os.path.join(log_directory_path, 'log'+str(log_save_id)+'_'+args.note)
     logging_config(folder=save_dir, name='log{:d}'.format(log_save_id), note=args.note, no_console=False)
@@ -282,12 +284,12 @@ if __name__ == '__main__':
         device = torch.device(f'cuda:{args.cuda}')
 
     dataset = args.dataset
-    data_path = f'../data/output/{dataset}/records_final.pkl'
-    voc_path = f'../data/output/{dataset}/voc_final.pkl'
-    ddi_adj_path = f'../data/output/{dataset}/ddi_A_final.pkl'
-    ddi_mask_path = f'../data/output/{dataset}/ddi_mask_H.pkl'
-    molecule_path = f'../data/output/{dataset}/db2SMILES.pkl'
-    substruct_smile_path = f'../data/output/{dataset}/substructure_smiles.pkl'
+    data_path = f'../../data/output/{dataset}/records_final.pkl'
+    voc_path = f'../../data/output/{dataset}/voc_final.pkl'
+    ddi_adj_path = f'../../data/output/{dataset}/ddi_A_final.pkl'
+    ddi_mask_path = f'../../data/output/{dataset}/ddi_mask_H.pkl'
+    molecule_path = f'../../data/output/{dataset}/db2SMILES.pkl'
+    substruct_smile_path = f'../../data/output/{dataset}/substructure_smiles.pkl'
 
     with open(ddi_adj_path, 'rb') as Fin:
         ddi_adj = torch.from_numpy(dill.load(Fin)).to(device)

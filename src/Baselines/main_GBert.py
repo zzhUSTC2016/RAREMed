@@ -12,8 +12,10 @@ from copy import deepcopy
 
 import torch
 from torch.optim import Adam
-from torch.utils.tensorboard import SummaryWriter
 from torch.utils.data import DataLoader, RandomSampler, SequentialSampler, Dataset
+
+sys.path.append("..")
+sys.path.append("../..")
 
 from models.GBert import GBERT_Predict
 from utils.util import multi_label_metric, ddi_rate_score, get_n_params, create_log_id, logging_config, get_model_path, get_grouped_metrics
@@ -109,7 +111,7 @@ def main(args):
         args.note = f'test of {args.log_dir_prefix}'
     else:
         args.note = f'finetune of {args.pretrain_prefix}'
-    log_directory_path = os.path.join('log', args.dataset, args.model_name)
+    log_directory_path = os.path.join('../log', args.dataset, args.model_name)
     # os.makedirs(log_directory_path, exist_ok=True)
     log_save_id = create_log_id(log_directory_path)
     save_dir = os.path.join(log_directory_path, 'log'+str(log_save_id)+'_'+args.note)
@@ -123,9 +125,9 @@ def main(args):
     f'therhold={args.therhold}, save_dir={log_save_id}')
     
     # load data
-    data_path = f'../data/output/{args.dataset}' + '/records_final.pkl'
-    voc_path = f'../data/output/{args.dataset}' + '/voc_final.pkl'
-    ddi_adj_path = f'../data/output/{args.dataset}' + '/ddi_A_final.pkl'
+    data_path = f'../../data/output/{args.dataset}' + '/records_final.pkl'
+    voc_path = f'../../data/output/{args.dataset}' + '/voc_final.pkl'
+    ddi_adj_path = f'../../data/output/{args.dataset}' + '/ddi_A_final.pkl'
     
     device = torch.device('cuda:{}'.format(args.cuda))
 
@@ -334,7 +336,6 @@ def evaluator(args, model, eval_dataloader, ddi_adj_path, device, rec_results_pa
 
 
 if __name__ == '__main__':
-    sys.path.append("..")
     torch.manual_seed(1203)
     np.random.seed(2048)
     args = get_args()

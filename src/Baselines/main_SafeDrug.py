@@ -1,22 +1,19 @@
 import os
 import sys
 import dill
-import time
 import logging
 import argparse
 import numpy as np
-import pandas as pd
 from tqdm import tqdm
 from copy import deepcopy
-from scipy.stats import linregress
-# import yaml
 
 import torch
 import torch.nn.functional as F
 from torch.optim import Adam
 from torch.utils.tensorboard import SummaryWriter
 
-from utils import data_loader
+sys.path.append("..")
+sys.path.append("../..")
 from models.SafeDrug import SafeDrug
 from utils.util import multi_label_metric, ddi_rate_score, \
     get_n_params, buildMPNN, create_log_id, logging_config, get_grouped_metrics, get_model_path
@@ -139,7 +136,7 @@ def main(args):
     # set logger
     if args.test:
         args.note = f'test of {args.log_dir_prefix}'
-    log_directory_path = os.path.join('log', args.dataset, args.model_name)
+    log_directory_path = os.path.join('../log', args.dataset, args.model_name)
     log_save_id = create_log_id(log_directory_path)
     save_dir = os.path.join(log_directory_path, 'log'+str(log_save_id)+'_'+args.note)
     logging_config(folder=save_dir, name='log{:d}'.format(log_save_id), note=args.note, no_console=False)
@@ -147,11 +144,11 @@ def main(args):
     logging.info(args)
 
     # load data
-    data_path = f'../data/output/{args.dataset}' + '/records_final.pkl'
-    voc_path = f'../data/output/{args.dataset}' + '/voc_final.pkl'
-    ddi_adj_path = f'../data/output/{args.dataset}' + '/ddi_A_final.pkl'
-    ddi_mask_path = f'../data/output/{args.dataset}' + '/ddi_mask_H.pkl'
-    molecule_path = f'../data/output/{args.dataset}' + '/db2SMILES.pkl'
+    data_path = f'../../data/output/{args.dataset}' + '/records_final.pkl'
+    voc_path = f'../../data/output/{args.dataset}' + '/voc_final.pkl'
+    ddi_adj_path = f'../../data/output/{args.dataset}' + '/ddi_A_final.pkl'
+    ddi_mask_path = f'../../data/output/{args.dataset}' + '/ddi_mask_H.pkl'
+    molecule_path = f'../../data/output/{args.dataset}' + '/atc3toSMILES.pkl'
 
     device = torch.device('cuda:{}'.format(args.cuda))
 

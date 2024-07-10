@@ -1,20 +1,22 @@
 from copy import deepcopy
 import dill
 import numpy as np
-import pandas as pd
+import sys
 import argparse
 from sklearn.metrics import roc_curve
-from scipy.stats import linregress
 from torch.optim import RMSprop
 from tqdm import tqdm
 import os
 import torch
 import time
 import logging
-from models.MICRON import MICRON
-from utils.util import multi_label_metric, ddi_rate_score, get_n_params, create_log_id, logging_config, get_model_path, get_grouped_metrics
 import torch.nn.functional as F
 import matplotlib.pyplot as plt
+
+sys.path.append("..")
+sys.path.append("../..")
+from models.MICRON import MICRON
+from utils.util import multi_label_metric, ddi_rate_score, get_n_params, create_log_id, logging_config, get_model_path, get_grouped_metrics
 
 torch.manual_seed(1203)
 
@@ -176,7 +178,7 @@ def main():
     # set logger
     if args.test:
         args.note = f'test of {args.log_dir_prefix}'
-    log_directory_path = os.path.join('log', args.dataset, args.model_name)
+    log_directory_path = os.path.join('../log', args.dataset, args.model_name)
     log_save_id = create_log_id(log_directory_path)
     save_dir = os.path.join(log_directory_path, 'log'+str(log_save_id)+'_'+args.note)
     logging_config(folder=save_dir, name='log{:d}'.format(log_save_id), note=args.note, no_console=False)
@@ -184,10 +186,10 @@ def main():
     logging.info(args)
 
     # load data
-    data_path = f'../data/output/{args.dataset}' + '/records_final.pkl'
-    voc_path = f'../data/output/{args.dataset}' + '/voc_final.pkl'
+    data_path = f'../../data/output/{args.dataset}' + '/records_final.pkl'
+    voc_path = f'../../data/output/{args.dataset}' + '/voc_final.pkl'
     
-    ddi_adj_path = f'../data/output/{args.dataset}' + '/ddi_A_final.pkl'
+    ddi_adj_path = f'../../data/output/{args.dataset}' + '/ddi_A_final.pkl'
     device = torch.device('cuda:{}'.format(args.cuda))
 
     ddi_adj = dill.load(open(ddi_adj_path, 'rb'))

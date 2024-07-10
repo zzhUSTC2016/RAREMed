@@ -2,17 +2,17 @@ import argparse
 from copy import deepcopy
 import torch
 import numpy as np
-import pandas as pd
 import dill
 import logging
 from torch.optim import Adam
 import os
 import torch.nn.functional as F
 from tqdm import tqdm
-from scipy.stats import linregress
 from collections import defaultdict
 
 import sys
+sys.path.append("..")
+sys.path.append("../..")
 from models.RETAIN import Retain
 from utils.util import multi_label_metric, ddi_rate_score, get_n_params, create_log_id, logging_config, get_grouped_metrics, pop_metric, get_model_path, get_pretrained_model_path, sequence_output_process
 
@@ -93,16 +93,16 @@ def main(args):
     # set logger
     if args.test:
         args.note = 'test of ' + args.log_dir_prefix
-    log_directory_path = os.path.join('log', args.dataset, args.model_name)
+    log_directory_path = os.path.join('../log', args.dataset, args.model_name)
     log_save_id = create_log_id(log_directory_path)
     save_dir = os.path.join(log_directory_path, 'log'+str(log_save_id)+'_'+args.note)
     logging_config(folder=save_dir, name='log{:d}'.format(log_save_id), note=args.note, no_console=False)
     logging.info("当前进程的PID为: %s", os.getpid())
     logging.info(args)
     # load data
-    data_path = f'../data/output/{args.dataset}' + '/records_final.pkl'
-    voc_path = f'../data/output/{args.dataset}' + '/voc_final.pkl'
-    ddi_adj_path = f'../data/output/{args.dataset}' + '/ddi_A_final.pkl'
+    data_path = f'../../data/output/{args.dataset}' + '/records_final.pkl'
+    voc_path = f'../../data/output/{args.dataset}' + '/voc_final.pkl'
+    ddi_adj_path = f'../../data/output/{args.dataset}' + '/ddi_A_final.pkl'
     device = torch.device('cuda:{}'.format(args.cuda))
 
     data = dill.load(open(data_path, 'rb'))

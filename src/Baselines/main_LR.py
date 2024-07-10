@@ -1,9 +1,7 @@
 import dill
 import numpy as np
 from sklearn.linear_model import LogisticRegression
-from sklearn.ensemble import RandomForestClassifier
 from sklearn.multiclass import OneVsRestClassifier
-from collections import defaultdict
 from sklearn.model_selection import GridSearchCV
 import os
 
@@ -12,8 +10,9 @@ import logging
 from scipy.stats import linregress
 import pandas as pd
 
-
 import sys
+sys.path.append("..")
+sys.path.append("../..")
 from utils.util import multi_label_metric, create_log_id, logging_config
 
 
@@ -93,7 +92,7 @@ def get_grouped_metrics(test_y, y_pred, y_prob, data_test):
 
 def main():
     # set logger
-    log_directory_path = os.path.join('log', args.dataset, args.model_name)
+    log_directory_path = os.path.join('../log', args.dataset, args.model_name)
     log_save_id = create_log_id(log_directory_path)
     save_dir = os.path.join(log_directory_path, 'log'+str(log_save_id)+'_'+args.note)
     logging_config(folder=save_dir, name='log{:d}'.format(log_save_id), note=args.note, no_console=False)
@@ -101,9 +100,9 @@ def main():
     logging.info(args)
 
     grid_search = False
-    data_path = f'../data/output/{args.dataset}' + '/records_final.pkl'
-    voc_path = f'../data/output/{args.dataset}' + '/voc_final.pkl'
-    ddi_adj_path = f'../data/output/{args.dataset}' + '/ddi_A_final.pkl'
+    data_path = f'../../data/output/{args.dataset}' + '/records_final.pkl'
+    voc_path = f'../../data/output/{args.dataset}' + '/voc_final.pkl'
+    ddi_adj_path = f'../../data/output/{args.dataset}' + '/ddi_A_final.pkl'
 
     data = dill.load(open(data_path, 'rb'))
     voc = dill.load(open(voc_path, 'rb'))
