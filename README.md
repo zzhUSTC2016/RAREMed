@@ -4,7 +4,7 @@
 
 This repository provides the official PyTorch implementation and reproduction for our **SIGIR'24** paper titled **"Leave No Patient Behind: Enhancing Medication Recommendation for Rare Disease Patients"**. 
 
-More descriptions are available via the [paper](https://arxiv.org/abs/2403.17745).
+More descriptions are available via the [paper](https://dl.acm.org/doi/pdf/10.1145/3626772.3657785).
 
 <div style="text-align: center;">
 <img src="figs/RAREMed.png" alt="introduction" style="zoom:30%;" />
