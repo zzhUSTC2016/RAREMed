@@ -58,12 +58,12 @@ If this work helps you, please kindly cite our papers:
 
 3. Download the [drugbank_drugs_info.csv](https://drive.google.com/file/d/1EzIlVeiIR6LFtrBnhzAth4fJt6H_ljxk/view?usp=sharing) and [drug-DDI.csv]( https://drive.google.com/file/d/1mnPc0O0ztz0fkv3HF-dpmBb8PLWsEoDz/view?usp=sharing) files, and put them in the `data/input/` directory.
 
-## Preprocess the data
+## Process the data
 
-Run the following command to preprocess the data:
+Run the following command to process the data:
 
 ```bash
-python preprocess.py
+python process.py
 ```
 
 If things go well, the processed data will be saved in the `data/output/` directory. You can run the models now!
