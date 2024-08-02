@@ -336,7 +336,6 @@ def main(args):
     data_val = data[split_point:split_point + val_len]
     data_pretrain = data[:split_point + val_len]
     data_test = data[split_point+val_len:]
-    data_test = data[:10000]
 
     # convert data into single visit format
     data_pretrain = [visit for patient in data_pretrain for visit in patient]
