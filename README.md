@@ -2,15 +2,13 @@
 
 [![LICENSE](https://img.shields.io/badge/license-MIT-green)](https://github.com/zzhUSTC2016/RAREMed/blob/main/LICENSE)
 
-<div style="text-align: center;">
-<img src="figs/RAREMed.png" alt="introduction" style="zoom:50%;" />
-</div>
-
-
 This repository provides the official PyTorch implementation and reproduction for our **SIGIR'24** paper titled **"Leave No Patient Behind: Enhancing Medication Recommendation for Rare Disease Patients"**. 
 
-More descriptions are available via the [paper](https://arxiv.org/abs/2403.17745).
-<!-- and the [slides](https://cdn.chongminggao.top/files/pdf/DORL-slides.pdf), and this Chinese [Zhihu Post](https://zhuanlan.zhihu.com/p/646690133). -->
+More descriptions are available via the [paper](https://dl.acm.org/doi/pdf/10.1145/3626772.3657785).
+
+<div style="text-align: center;">
+<img src="figs/RAREMed.png" alt="introduction" style="zoom:30%;" />
+</div>
 
 
 If this work helps you, please kindly cite our papers:
@@ -53,17 +51,19 @@ If this work helps you, please kindly cite our papers:
 
 
 ## Download the data
+
 1. You must have obtained access to [MIMIC-III](https://physionet.org/content/mimiciii/) and [MIMIC-IV](https://physionet.org/content/mimiciv/) databases before running the code. 
 
 2. Download the MIMIC-III and MIMIC-IV datasets, then unzip and put them in the `data/input/` directory. Specifically, you need to download the following files from MIMIC-III: `DIAGNOSES_ICD.csv`, `PRESCRIPTIONS.csv`, and `PROCEDURES_ICD.csv`, and the following files from MIMIC-IV: `DIAGNOSES_ICD.csv`, `PRESCRIPTIONS.csv`, and `PROCEDURES_ICD.csv`.
 
 3. Download the [drugbank_drugs_info.csv](https://drive.google.com/file/d/1EzIlVeiIR6LFtrBnhzAth4fJt6H_ljxk/view?usp=sharing) and [drug-DDI.csv]( https://drive.google.com/file/d/1mnPc0O0ztz0fkv3HF-dpmBb8PLWsEoDz/view?usp=sharing) files, and put them in the `data/input/` directory.
 
-## Preprocess the data
-Run the following command to preprocess the data:
+## Process the data
+
+Run the following command to process the data:
 
 ```bash
-python preprocess.py
+python process.py
 ```
 
 If things go well, the processed data will be saved in the `data/output/` directory. You can run the models now!
@@ -136,6 +136,7 @@ python main_GAMENet.py -t -l=log0
 ```
 
 ## Acknowledgement
+
 Thanks to [Jing Yi(井怡)](https://jingii.github.io/) for her help in the implementation of the RAREMed model.
 This repository is partially based on the [SafeDrug](https://github.com/ycq091044/SafeDrug) repository, you can find some additional details in the original repository.
 
